@@ -4,7 +4,6 @@ from .ThemeModeButton import ThemeModeButton
 from .SideBar import SideMenuButton
 from .NewButton import NewButton
 from .AccountButton import AccountButton
-from styles import AppColors
 
 
 class SearchBar(ft.TextField):
@@ -16,14 +15,13 @@ class SearchBar(ft.TextField):
         self.border_radius = 10
         self.content_padding = 10
         self.prefix_icon = ft.Icons.SEARCH
-        self.border_color = "#727272"
+        self.border_color = ft.Colors.OUTLINE
 
 
 class TopBar(ft.Container):
     def __init__(self, page, sidebar_ref):
         super().__init__()
         self.page: ft.Page = page
-        self.colors = AppColors(page)
 
         self.content = ft.Row(
             [
@@ -48,12 +46,7 @@ class TopBar(ft.Container):
         )
         
         self.height = 60
-        self.bgcolor = self.colors["topbar_bg"]
+        self.bgcolor = ft.Colors.SURFACE
         self.padding = ft.padding.symmetric(horizontal=20)
         # CRITICAL: Allow menu to overflow outside TopBar bounds
         self.clip_behavior = ft.ClipBehavior.NONE
-
-    def before_update(self):
-        # Update colors when theme changes
-        self.bgcolor = self.colors["topbar_bg"]
-        super().before_update()

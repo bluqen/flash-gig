@@ -1,18 +1,18 @@
 import flet as ft
-from styles import AppColors
+
 
 class BaseButton(ft.TextButton):
     """Simple clickable button with icon and label using Flet's ButtonStyle."""
 
     def __init__(
         self,
+        page: ft.Page,
         text: str,
         icon: str,
-        colors: AppColors,
         active: bool = False,
         on_click_callback=None,
     ):
-        self.colors = colors
+        self.page = page
         self.active = active
         self.on_click_callback = on_click_callback
 
@@ -20,14 +20,14 @@ class BaseButton(ft.TextButton):
             text=text,
             icon=icon,
             style=ft.ButtonStyle(
-                color=colors["text"],
+                color=ft.Colors.ON_SURFACE,  # Semantic color
                 bgcolor={
-                    ft.ControlState.HOVERED: colors["base_button_hover"],
-                    ft.ControlState.PRESSED: colors["base_button_active"],
-                    ft.ControlState.DEFAULT: colors["base_button_active"] if active else colors["base_button"],
+                    ft.ControlState.HOVERED: ft.Colors.TERTIARY_CONTAINER,
+                    ft.ControlState.PRESSED: ft.Colors.TERTIARY,
+                    ft.ControlState.DEFAULT: ft.Colors.TERTIARY if active else ft.Colors.SECONDARY,
                 },
                 overlay_color={
-                    ft.ControlState.PRESSED: colors.get("base_button_active", ft.Colors.with_opacity(0.1, ft.Colors.WHITE)),
+                    ft.ControlState.PRESSED: ft.Colors.TERTIARY,
                 },
                 padding=ft.padding.symmetric(vertical=10, horizontal=15),
                 shape=ft.RoundedRectangleBorder(radius=8),
@@ -45,21 +45,8 @@ class BaseButton(ft.TextButton):
         """Set active state (for navigation buttons)."""
         self.active = active
         self.style.bgcolor = {
-            ft.ControlState.HOVERED: self.colors["base_button_hover"],
-            ft.ControlState.PRESSED: self.colors["base_button_active"],
-            "": self.colors["base_button_active"] if active else ft.Colors.TRANSPARENT,
+            ft.ControlState.HOVERED: ft.Colors.TERTIARY_CONTAINER,
+            ft.ControlState.PRESSED: ft.Colors.TERTIARY,
+            ft.ControlState.DEFAULT: ft.Colors.TERTIARY if active else ft.Colors.TRANSPARENT,
         }
         self.update()
-
-    def before_update(self):
-        """Refresh colors when theme updates."""
-        self.style.color = self.colors["text"]
-        self.style.bgcolor = {
-            ft.ControlState.HOVERED: self.colors["base_button_hover"],
-            ft.ControlState.PRESSED: self.colors["base_button_active"],
-            ft.ControlState.DEFAULT: self.colors["base_button_active"] if self.active else self.colors["base_button"],
-        }
-        self.style.overlay_color = {
-            ft.ControlState.PRESSED: self.colors.get("base_button_active", ft.Colors.with_opacity(0.1, ft.Colors.WHITE)),
-        }
-        super().before_update()

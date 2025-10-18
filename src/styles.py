@@ -17,7 +17,7 @@ class AppColors:
         "sidebar_button_hover": {"light": "#202236", "dark": "#202236"},
         "base_button": {"light": "#e0e0e0", "dark": "#1b1b2b"},
         "base_button_active": {"light": "#3682c0", "dark": "#3682c0"},
-        "base_button_hover": {"light": "#202236", "dark": "#202236"},
+        "base_button_hover": {"light": "#C7C7C7", "dark": "#202236"},
     }
     
     def __init__(self, page: ft.Page):
@@ -32,3 +32,31 @@ class AppColors:
         if color_name in self.COLORS.keys():
             return self.__getitem__(color_name)
         return default
+    
+def get_theme_colors(page: ft.Page) -> dict:
+    """
+    Returns a dictionary of semantic color names mapped to theme-aware
+    color dictionaries for Flet. This allows for easy access to theme
+    colors that automatically update on theme mode change.
+    """
+    light_scheme = page.theme.color_scheme
+    dark_scheme = page.dark_theme.color_scheme
+
+    return {
+        "text": {
+            "light": light_scheme.on_surface,
+            "dark": dark_scheme.on_surface,
+        },
+        "card_bg": {
+            "light": light_scheme.surface_variant,
+            "dark": dark_scheme.surface_variant,
+        },
+        "border": {
+            "light": light_scheme.outline,
+            "dark": dark_scheme.outline,
+        },
+        "button_hover": {
+            "light": light_scheme.tertiary_container,
+            "dark": dark_scheme.tertiary_container,
+        },
+    }

@@ -8,7 +8,7 @@ class GradientText(ft.Container):
         colors: list[str] = [ft.Colors.PINK, ft.Colors.PURPLE],
         size: int = 24,
         font="Roboto-Bold",
-        gradient_direction: str = "horizontal",  # "horizontal" or "vertical"
+        gradient_direction: str = "horizontal", alignment=None
     ):
         super().__init__()
 
@@ -30,6 +30,7 @@ class GradientText(ft.Container):
                 text,
                 size=size,
                 font_family=font,
-                color=ft.Colors.WHITE,  # required for mask blending
-            ),
+                color=ft.Colors.WHITE # required for mask blending
+            )
         )
+        self.alignment = alignment

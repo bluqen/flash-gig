@@ -1,5 +1,4 @@
 import flet as ft
-from styles import AppColors
 
 
 class AccountMenu(ft.Container):
@@ -8,12 +7,11 @@ class AccountMenu(ft.Container):
     def __init__(self, page: ft.Page, account_info: dict, on_logout=None, on_close=None):
         super().__init__()
         self.page = page
-        self.colors = AppColors(page)
         self.on_logout = on_logout
         self.on_close = on_close
         
         self.width = 280
-        self.bgcolor = self.colors["card_bg"]
+        self.bgcolor = "surfacevariant"  # Semantic color
         self.border_radius = 12
         self.padding = 16
         self.shadow = ft.BoxShadow(
@@ -49,12 +47,12 @@ class AccountMenu(ft.Container):
                             account_info["name"],
                             size=16,
                             font_family="Roboto-Bold",
-                            color=self.colors["text"],
+                            color=ft.Colors.ON_SURFACE,  # Semantic color
                         ),
                         ft.Text(
                             account_info["email"],
                             size=12,
-                            color=self.colors["text"],
+                            color=ft.Colors.ON_SURFACE,  # Semantic color
                         ),
                     ],
                     spacing=2,
@@ -70,14 +68,14 @@ class AccountMenu(ft.Container):
             [
                 self._create_menu_item("Profile", ft.Icons.PERSON, self._on_profile_click),
                 self._create_menu_item("Settings", ft.Icons.SETTINGS, self._on_settings_click),
-                ft.Divider(height=1, color=self.colors["border"]),
+                ft.Divider(height=1, color=ft.Colors.OUTLINE),  # Semantic color
                 self._create_menu_item("Logout", ft.Icons.LOGOUT, self._on_logout_click),
             ],
             spacing=4,
         )
         
         self.content = ft.Column(
-            [profile_section, ft.Divider(height=1, color=self.colors["border"]), menu_items],
+            [profile_section, ft.Divider(height=1, color=ft.Colors.OUTLINE), menu_items],
             spacing=12,
         )
     
@@ -86,8 +84,8 @@ class AccountMenu(ft.Container):
         container = ft.Container(
             content=ft.Row(
                 [
-                    ft.Icon(icon, size=20, color=self.colors["text"]),
-                    ft.Text(text, size=14, color=self.colors["text"]),
+                    ft.Icon(icon, size=20, color=ft.Colors.ON_SURFACE),  # Semantic color
+                    ft.Text(text, size=14, color=ft.Colors.ON_SURFACE),  # Semantic color
                 ],
                 spacing=12,
             ),
@@ -102,7 +100,7 @@ class AccountMenu(ft.Container):
     
     def _on_hover(self, e):
         if e.data == "true":
-            e.control.bgcolor = self.colors["base_button_hover"]
+            e.control.bgcolor = ft.Colors.TERTIARY_CONTAINER  # Semantic color
         else:
             e.control.bgcolor = None
         e.control.update()
@@ -123,11 +121,6 @@ class AccountMenu(ft.Container):
             self.on_close()
         if self.on_logout:
             self.on_logout()
-    
-    def before_update(self):
-        self.colors = AppColors(self.page)
-        self.bgcolor = self.colors["card_bg"]
-        super().before_update()
 
 
 class AccountButton(ft.Container):
@@ -136,7 +129,6 @@ class AccountButton(ft.Container):
     def __init__(self, page: ft.Page, account_info: dict):
         super().__init__()
         self.page = page
-        self.colors = AppColors(page)
         self.account_info = account_info
         self.menu_open = False
         
@@ -155,7 +147,7 @@ class AccountButton(ft.Container):
                 border_radius=20,
                 clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
             ),
-            border=ft.border.all(2, self.colors["accent"]),
+            border=ft.border.all(2, ft.Colors.PRIMARY),  # Semantic color
             border_radius=20,
             ink=True,
             on_click=self._toggle_menu,
@@ -261,7 +253,3 @@ class AccountButton(ft.Container):
         self._hide_menu()
         print("User logged out")
         # Add your logout logic here
-    
-    def before_update(self):
-        self.colors = AppColors(self.page)
-        super().before_update()
